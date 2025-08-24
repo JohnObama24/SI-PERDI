@@ -18,5 +18,7 @@ Route::middleware(['auth:pegawai', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth:pegawai', 'role:pegawai'])->group(function () {
-    Route::get('/pegawai', fn() => view('pegawai.testPegawai'))->name('pegawai-dashboard');
+    Route::get('/pegawai', fn() => view('pegawai.dashboardPegawai'))->name('pegawai-dashboard');
+    Route::get('/buat-perjalanan', fn() => view('pegawai.formPerjalanan'))->name('pegawai-form');
 });
+// Route::get('/pegawai', fn() => view('pegawai.beneran'))->name('pegawai');
