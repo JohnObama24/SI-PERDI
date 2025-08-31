@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Karyawan')
+@section('title', 'Dashboard admin')
 
 @section('nav-title')Admin @endsection
 
@@ -168,8 +168,6 @@
 
                         <div>
                             <div class="flex space-x-2">
-                                {{-- Tombol Setujui --}}
-                                {{-- Jika status masih pending, tampilkan tombol --}}
                                 @if ($p->isVerified === 'belum diverifikasi')
                                     {{-- Tombol Setujui --}}
                                     <form action="{{ route('verifikasi-accept', $p->id) }}" method="POST" class="inline">
@@ -179,6 +177,15 @@
                                         <button type="submit"
                                             class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
                                             Setujui
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('verifikasi-reject', $p->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="action" value="setuju">
+                                        <button type="submit"
+                                            class="px-4 py-2 rounded-lg bg-red-600 text-white text-sm hover:bg-red-700">
+                                            tolak
                                         </button>
                                     </form>
                                 @endif

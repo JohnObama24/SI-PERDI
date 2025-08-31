@@ -55,7 +55,7 @@ public function login(Request $request)
         Auth::guard('pegawai')->login($Pegawai);
         $request->session()->regenerate();
 
-        return redirect()->route('pegawai-dashboard');
+        return redirect()->route('admin-dashboard');
     }
 
     public function Logout(Request $request) {
