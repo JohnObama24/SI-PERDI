@@ -13,12 +13,12 @@ Route::get('/', function () {
 Route::get('/login', [authController::class, 'ShowLoginForm'])->name('login');
 Route::post('/login', [authController::class, 'login'])->name('login.process');
 
-Route::get('/register', [authController::class, 'ShowRegisForm'])->name('register');
-Route::post('/register', [authController::class, 'Register'])->name('register.process');
 
 Route::post('/logout', [authController::class, 'Logout'])->name('logout.process');
 
 Route::middleware(['auth:pegawai', 'role:admin'])->group(function () {
+    Route::get('/register', [authController::class, 'ShowRegisForm'])->name('register');
+    Route::post('/register', [authController::class, 'Register'])->name('register.process');
     Route::get('/admin', [perjalananController::class, 'index'])->name('admin-dashboard');
     Route::patch('/verifikasi/accept/{id}', [perjalananController::class, 'verifikasiAccept'])->name('verifikasi-accept');
     Route::patch('/verifikasi/reject/{id}', [perjalananController::class, 'verifikasiReject'])->name('verifikasi-reject');

@@ -52,7 +52,7 @@ public function index(Request $request)
 
     $activeFilter = $request->filter;
 
-    $view = $user->role === 'admin' ? 'admin.TestAdmin' : 'pegawai.dashboardPegawai';
+    $view = $user->role === 'admin' ? 'admin.dashboardAdmin' : 'pegawai.dashboardPegawai';
 
     return view($view, compact(
         'perjalanans',

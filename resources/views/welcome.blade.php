@@ -41,10 +41,6 @@
                    class="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-full text-center transition duration-300 transform hover:scale-105">
                     LOGIN
                 </a>
-                <a href="{{ route('register')}}"
-                   class="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-full text-center transition duration-300 transform hover:scale-105">
-                    REGISTER
-                </a>
             </div>
 
         <div class="text-center text-sm text-gray-600">
