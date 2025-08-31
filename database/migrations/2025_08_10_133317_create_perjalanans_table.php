@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('tgl_pulang');
             $table->string('deskripsi');
             $table->enum('status', ['selesai', 'belum selesai'])->default('belum selesai');
+            $table->enum('isVerified', ['diverifikasi', 'belum diverifikasi', 'ditolak'])->default('belum diverifikasi');
             $table->timestamps();
         });
     }

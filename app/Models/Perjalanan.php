@@ -14,7 +14,8 @@ class Perjalanan extends Model
         'tgl_berangkat',
         'tgl_pulang',
         'deskripsi',
-        'status'
+        'status',
+        'isVerified'
     ];
 
         public function pegawai()
@@ -22,16 +23,5 @@ class Perjalanan extends Model
         return $this->belongsTo(Pegawai::class, 'pegawai_id');
     }
 
-    // Relasi ke verifikasi
-    public function verifikasi()
-    {
-        return $this->hasOne(Verifikasi::class, 'perjalanan_id');
-    }
 
-    // Relasi ke status riwayat perjalnan
-    public function riwayatPerjalanan()
-    {
-        return $this->hasMany(Riwayat_Perjalanan::class, 'perjalanan_id');
-    }
-    
 }

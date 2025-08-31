@@ -27,7 +27,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-gray-900">Dashboard Karyawan</h1>
-                    <p class="text-sm text-gray-500">Sistem Informasi Perjalanan Dinas</p>
+                    <p class="text-sm text-gray-500">Sistem Informasi Perjalanan Dinas<,/p>
                 </div>
             </div>
             <div class="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center">

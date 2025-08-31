@@ -42,21 +42,27 @@ public function login(Request $request)
         $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6', // pakai password_confirmation
+            'password' => 'required|string|min:6',
         ]);
 
-        // Simpan user baru
         $Pegawai = Pegawai::create([
             'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => 'pegawai', // otomatis role pegawai
+            'role' => 'pegawai',
         ]);
 
         Auth::guard('pegawai')->login($Pegawai);
         $request->session()->regenerate();
 
         return redirect()->route('pegawai-dashboard');
+    }
+
+    public function Logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('/');
     }
 
 
