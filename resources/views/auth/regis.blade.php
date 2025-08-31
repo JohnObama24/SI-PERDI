@@ -28,7 +28,7 @@
             <!-- Header -->
             <div class="text-center mb-8">
                 <h1 class="text-white text-2xl font-bold mb-2">REGISTRASI</h1>
-                <p class="text-gray-400 text-sm">Sign In to Your Account</p>
+                <p class="text-gray-400 text-sm">Masukkan User Baru</p>
             </div>
 
             <!-- regis Form -->
@@ -78,17 +78,12 @@
                     class="w-full bg-[#000000] hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500">
                     Regis
                 </button>
+                <button
+                    class="w-full bg-[#000000] hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    onclick="window.location='{{ route('admin-dashboard') }}'">
+                    Kembali
+                </button>
             </form>
-
-            <!-- Login Link -->
-            <div class="text-center mt-6">
-                <p class="text-gray-400 text-sm">
-                    Udah punya akun?
-                    <a href="" class="text-blue-400 hover:text-blue-300 hover:underline">
-                        Logim di sini
-                    </a>
-                </p>
-            </div>
         </div>
     </div>
 

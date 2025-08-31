@@ -2,6 +2,8 @@
 
 @section('title', 'Dashboard Karyawan')
 
+@section('nav-title')Halaman Admin @endsection
+
 @section('content')
     <div>
         

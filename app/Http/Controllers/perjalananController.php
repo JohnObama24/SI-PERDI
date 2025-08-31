@@ -12,47 +12,59 @@ class perjalananController extends Controller
 {
     //
 
-    public function index(Request $request)
-    {
-        $user = Auth::user();
+public function index(Request $request)
+{
+    $user = Auth::user();
 
-        // filter berdasarkan role
-        $query = Perjalanan::query();
-        if ($user->role !== 'admin') {
-            $query->where('pegawai_id', $user->id);
-        }
-
-        if ($request->filter === 'menunggu') {
-            $query->where('isVerified', 'belum diverifikasi');
-        } elseif ($request->filter === 'disetujui') {
-            $query->where('isVerified', 'diverifikasi')
-                ->where('status', 'belum selesai');
-        } elseif ($request->filter === 'selesai') {
-            $query->where('status', 'selesai');
-        }
-
-
-        $perjalanans = $query->latest()->get();
-
-        $totalPerjalanan = $query->count(); 
-        $totalMenunggu = Perjalanan::where('isVerified', 'belum diverifikasi')
-            ->when($user->role !== 'admin', fn($q) => $q->where('pegawai_id', $user->id))
-            ->count();
-        $totalBelumSelesai = Perjalanan::where('status', 'belum selesai')
-            ->when($user->role !== 'admin', fn($q) => $q->where('pegawai_id', $user->id))
-            ->count();
-        $totalSelesai = Perjalanan::where('status', 'selesai')
-            ->when($user->role !== 'admin', fn($q) => $q->where('pegawai_id', $user->id))
-            ->count();
-
-        return view('pegawai.dashboardPegawai', compact(
-            'perjalanans',
-            'totalPerjalanan',
-            'totalMenunggu',
-            'totalBelumSelesai',
-            'totalSelesai'
-        ));
+    $nama = $user->nama_lengkap;
+    // filter berdasarkan role
+    $query = Perjalanan::query();
+    if ($user->role !== 'admin') {
+        $query->where('pegawai_id', $user->id);
     }
+
+    if ($request->filter === 'menunggu') {
+        $query->where('isVerified', 'belum diverifikasi');
+    } elseif ($request->filter === 'disetujui') {
+        $query->where('isVerified', 'diverifikasi')
+            ->where('status', 'belum selesai');
+    } elseif ($request->filter === 'selesai') {
+        $query->where('status', 'selesai');
+    }
+
+    $perjalanans = $query->with('pegawai')->latest()->get();
+
+    $totalPerjalanan = $query->count();
+
+    if ($user->role === 'admin') {
+        $totalPerjalanan   = Perjalanan::count();
+        $totalMenunggu     = Perjalanan::where('isVerified', 'belum diverifikasi')->count();
+        $totalBelumSelesai = Perjalanan::where('status', 'belum selesai')->count();
+        $totalSelesai      = Perjalanan::where('status', 'selesai')->count();
+
+    } else {
+        $totalPerjalanan   = Perjalanan::where('pegawai_id', $user->id)->count();
+        $totalMenunggu     = Perjalanan::where('pegawai_id', $user->id)->where('isVerified', 'belum diverifikasi')->count();
+        $totalBelumSelesai = Perjalanan::where('pegawai_id', $user->id)->where('status', 'belum selesai')->count();
+        $totalSelesai      = Perjalanan::where('pegawai_id', $user->id)->where('status', 'selesai')->count();
+
+    }
+
+    $activeFilter = $request->filter;
+
+    $view = $user->role === 'admin' ? 'admin.TestAdmin' : 'pegawai.dashboardPegawai';
+
+    return view($view, compact(
+        'perjalanans',
+        'totalPerjalanan',
+        'totalMenunggu',
+        'totalBelumSelesai',
+        'totalSelesai',
+        'activeFilter',
+        'nama'
+    ));
+}
+
 
     public function store(Request $request)
     {
@@ -89,6 +101,27 @@ class perjalananController extends Controller
         $perjalanan->save();
 
         return redirect()->back()->with('success', 'Status perjalanan berhasil diperbarui.');
+    }
+
+    public function verifikasiAccept($id){
+        $perjalanan = Perjalanan::findOrFail($id);
+
+        $perjalanan->isVerified = 'diverifikasi';
+
+        $perjalanan->save();
+
+        return redirect()->back()->with('success', 'Perjalanan berhasil diverifikasi.');
+    }
+
+    public function verifikasiReject($id){
+        $perjalanan = Perjalanan::findOrFail($id);
+
+        $perjalanan->isVerified = 'ditolak';
+
+        $perjalanan->save();
+
+        return redirect()->back()->with('success', 'Perjalanan berhasil diverifikasi.');
+
     }
 
 

@@ -21,7 +21,7 @@ public function login(Request $request)
     $pegawai = Pegawai::where('email', $loginData['email'])->first();
 
     if ($pegawai && Hash::check($loginData['password'], $pegawai->password)) {
-        Auth::guard('pegawai')->login($pegawai); // <- perbaikan disini
+        Auth::guard('pegawai')->login($pegawai);
         $request->session()->regenerate();
 
         if ($pegawai->role === 'admin') {
@@ -62,7 +62,7 @@ public function login(Request $request)
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('/');
+        return redirect('/');
     }
 
 

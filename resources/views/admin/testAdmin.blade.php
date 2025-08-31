@@ -1,192 +1,195 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Admin - Sistem Informasi Perjalanan Dinas')
+@section('title', 'Dashboard Karyawan')
+
+@section('nav-title')Admin @endsection
 
 @section('content')
-<div class="min-h-screen bg-gray-100">
-
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <!-- Welcome Section -->
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Selamat Datang, Laythan Lateesha!</h2>
-            <p class="text-lg text-gray-600">Kelola Perjalanan Dinas Karyawan dengan Mudah dan Efisien.</p>
+    <!-- Welcome Message -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6 flex items-center justify-between w-full">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Selamat Datang, {{ $nama }}</h2>
+            <p class="text-gray-600">Kelola Perjalanan Dinas Anda dengan Mudah dan Efisien.</p>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Total Perjalanan Karyawan -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600 mb-1">Total Perjalanan Karyawan</p>
-                        <p class="text-3xl font-bold text-gray-900">35</p>
-                    </div>
-                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4m-6 0h6M8 7l-6 8h20l-6-8M8 7h8m-8 8v6a1 1 0 001 1h6a1 1 0 001-1v-6"></path>
-                        </svg>
-                    </div>
+        <div class="flex gap-6">
+            <form action="{{ route('logout.process') }}" method="post">
+                @csrf
+                <button
+                    class="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-800 transition-colors">
+                    Log out
+                </button>
+            </form>
+            <form action="{{ route('register') }}" method="get">
+                @csrf
+                <button
+                    class="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-800 transition-colors">
+                    Tambah User
+                </button>
+            </form>
+            <form action="{{ route('export') }}" method="get">
+                <button
+                    class="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-800 transition-colors">
+                    export
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Perjalanan -->
+        <div class="bg-white rounded-lg shadow-sm p-6 cursor-pointer {{ $activeFilter == null ? 'ring-2 ring-blue-500 bg-blue-50' : '' }}"
+            onclick="window.location='{{ route('admin-dashboard', ['filter' => null]) }}'">
+            <div class="flex items-center justify-between mb-4">
+                <div class="bg-blue-100 p-2 rounded-lg">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2
+                                                  0 01-2-2V5a2 2 0 012-2h5.586a1
+                                                  1 0 01.707.293l5.414 5.414a1 1
+                                                  0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
                 </div>
             </div>
-
-            <!-- Menunggu Persetujuan -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600 mb-1">Menunggu Persetujuan</p>
-                        <p class="text-3xl font-bold text-gray-900">5</p>
-                    </div>
-                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sedang Berlangsung -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600 mb-1">Sedang Berlangsung</p>
-                        <p class="text-3xl font-bold text-gray-900">7</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Selesai -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600 mb-1">Selesai</p>
-                        <p class="text-3xl font-bold text-gray-900">20</p>
-                    </div>
-                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-600 mb-1">Total Perjalanan</h3>
+                <p class="text-3xl font-bold text-gray-900">{{ $totalPerjalanan }}</p>
             </div>
         </div>
 
-        <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Line Chart -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Jumlah Karyawan yang Perjalanan Dinas Setiap Tahun</h3>
-                <div class="h-64">
-                    <canvas id="lineChart" width="400" height="200"></canvas>
+        <div class="bg-white rounded-lg shadow-sm p-6 cursor-pointer {{ $activeFilter == 'menunggu' ? 'ring-2 ring-orange-500 bg-orange-50' : '' }}"
+            onclick="window.location='{{ route('admin-dashboard', ['filter' => 'menunggu']) }}'">
+            <div class="flex items-center justify-between mb-4">
+                <div class="bg-orange-100 p-2 rounded-lg">
+                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0
+                                                  11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
             </div>
-
-            <!-- Pie Chart -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Distribusi Perjalanan Dinas</h3>
-                <div class="h-64 flex items-center justify-center">
-                    <canvas id="pieChart" width="300" height="300"></canvas>
-                </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-600 mb-1">Menunggu Persetujuan</h3>
+                <p class="text-3xl font-bold text-gray-900">{{ $totalMenunggu }}</p>
             </div>
         </div>
 
-        <!-- Footer -->
-    </main>
-</div>
+        <div class="bg-white rounded-lg shadow-sm p-6 cursor-pointer {{ $activeFilter == 'berlangsung' ? 'ring-2 ring-green-500 bg-green-50' : '' }}"
+            onclick="window.location='{{ route('admin-dashboard', ['filter' => 'belum selesai']) }}'">
+            <div class="flex items-center justify-between mb-4">
+                <div class="bg-green-100 p-2 rounded-lg">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0
+                                                  010-12.728m12.728 0a9 9 0
+                                                  010 12.728m-9.9-2.829a5 5
+                                                  0 010-7.07m7.072 0a5 5
+                                                  0 010 7.07M13 12a1 1 0
+                                                  11-2 0 1 1 0 012 0z" />
+                    </svg>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-600 mb-1">Sedang Berlangsung</h3>
+                <p class="text-3xl font-bold text-gray-900">{{ $totalBelumSelesai }}</p>
+            </div>
+        </div>
 
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-<script>
-    // Line Chart
-    const lineCtx = document.getElementById('lineChart').getContext('2d');
-    new Chart(lineCtx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Oct', 'Dec'],
-            datasets: [{
-                label: 'Series 1',
-                data: [15, 17, 22, 30, 30, 35, 32, 34, 29, 29, 19, 24],
-                borderColor: '#06b6d4',
-                backgroundColor: 'rgba(6, 182, 212, 0.1)',
-                tension: 0.4,
-                fill: true
-            }, {
-                label: 'Series 2',
-                data: [8, 10, 16, 20, 22, 19, 25, 23, 15, 12, 8, 0],
-                borderColor: '#fbbf24',
-                backgroundColor: 'rgba(251, 191, 36, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 40,
-                    ticks: {
-                        stepSize: 5
-                    }
-                }
-            }
-        }
-    });
+        <div class="bg-white rounded-lg shadow-sm p-6 cursor-pointer {{ $activeFilter == 'selesai' ? 'ring-2 ring-gray-500 bg-gray-50' : '' }}"
+            onclick="window.location='{{ route('admin-dashboard', ['filter' => 'selesai']) }}'">
+            <div class="flex items-center justify-between mb-4">
+                <div class="bg-gray-100 p-2 rounded-lg">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0
+                                                  11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-600 mb-1">Selesai</h3>
+                <p class="text-3xl font-bold text-gray-900">{{ $totalSelesai }}</p>
+            </div>
+        </div>
+    </div>
 
-    // Pie Chart
-    const pieCtx = document.getElementById('pieChart').getContext('2d');
-    new Chart(pieCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Pria', 'Wanita'],
-            datasets: [{
-                data: [50, 33, 17],
-                backgroundColor: [
-                    '#06b6d4',
-                    '#4ade80',
-                    '#a3a3a3'
-                ],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 20,
-                        generateLabels: function(chart) {
-                            const data = chart.data;
-                            return data.labels.map((label, i) => {
-                                const value = data.datasets[0].data[i];
-                                return {
-                                    text: `${label} ${value}%`,
-                                    fillStyle: data.datasets[0].backgroundColor[i],
-                                    strokeStyle: data.datasets[0].backgroundColor[i],
-                                    pointStyle: 'circle'
-                                };
-                            });
-                        }
-                    }
-                }
-            }
-        }
-    });
-</script>
-@endpush
+    <div class="flex flex-col justify-center mb-6 ">
+        @if ($activeFilter === 'menunggu')
+            <h3 class="text-lg font-semibold text-yellow-600 mb-2">Perjalanan yang Menunggu Persetujuan</h3>
+            <p class="text-sm text-gray-600">Semua perjalanan yang masih menunggu persetujuan admin.</p>
+        @elseif ($activeFilter === 'selesai')
+            <h3 class="text-lg font-semibold text-gray-600 mb-2">Perjalanan yang Sudah Selesai</h3>
+            <p class="text-sm text-gray-600">Daftar perjalanan yang sudah selesai dilakukan.</p>
+        @elseif ($activeFilter === 'belum selesai')
+            <h3 class="text-lg font-semibold text-green-600 mb-2">Perjalanan yang Sedang Berlangsung</h3>
+            <p class="text-sm text-gray-600">Daftar perjalanan yang sedang berjalan.</p>
+        @else
+            <h3 class="text-lg font-semibold text-blue-600 mb-2">Riwayat Perjalanan Dinas</h3>
+            <p class="text-sm text-gray-600">Daftar semua perjalanan dinas yang Anda lakukan.</p>
+        @endif
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Riwayat Perjalanan Dinas</h3>
+            <p class="text-sm text-gray-600">Daftar Semua Perjalanan Dinas yang Anda Lakukan</p>
+        </div>
+
+        <div class="space-y-4">
+            @forelse($perjalanans as $p)
+                <div
+                    class="
+                 @if ($p->isVerified === 'ditolak') border-2 border-red-500
+                    @elseif($p->isVerified === 'diverifikasi') border-2 border-green-500
+                    @else border border-gray-200 @endif
+                rounded-lg p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h4 class="font-semibold text-gray-900">{{ $p->pegawai->nama_lengkap }} -
+                                    {{ $p->pegawai->email }}</h4>
+
+                                {{-- Status Verifikasi --}}
+                                @if ($p->isVerified === 'ditolak')
+                                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Ditolak</span>
+                                @elseif($p->isVerified === 'diverifikasi')
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Disetujui</span>
+                                @else
+                                    <span
+                                        class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Menunggu</span>
+                                @endif
+                            </div>
+
+                            <p class="text-sm text-gray-600 mb-2">{{ $p->tujuan }} - {{ $p->deskripsi }}</p>
+
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span>{{ \Carbon\Carbon::parse($p->tgl_berangkat)->format('d/m/Y') }} -
+                                    {{ \Carbon\Carbon::parse($p->tgl_pulang)->format('d/m/Y') }}</span>
+                                <span>Diajukan {{ $p->created_at->format('d/m/Y') }}</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex space-x-2">
+                                {{-- Tombol Setujui --}}
+                                {{-- Jika status masih pending, tampilkan tombol --}}
+                                @if ($p->isVerified === 'belum diverifikasi')
+                                    {{-- Tombol Setujui --}}
+                                    <form action="{{ route('verifikasi-accept', $p->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="action" value="setuju">
+                                        <button type="submit"
+                                            class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
+                                            Setujui
+                                        </button>
+                                    </form>
+                                @endif
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-600">Belum ada perjalanan dinas yang diajukan.</p>
+            @endforelse
+        </div>
+    </div>
 @endsection
