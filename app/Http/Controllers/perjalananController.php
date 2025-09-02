@@ -12,58 +12,58 @@ class perjalananController extends Controller
 {
     //
 
-public function index(Request $request)
-{
-    $user = Auth::user();
+    public function index(Request $request)
+    {
+        $user = Auth::user();
 
-    $nama = $user->nama_lengkap;
-    // filter berdasarkan role
-    $query = Perjalanan::query();
-    if ($user->role !== 'admin') {
-        $query->where('pegawai_id', $user->id);
+        $nama = $user->nama_lengkap;
+        // filter berdasarkan role
+        $query = Perjalanan::query();
+        if ($user->role !== 'admin') {
+            $query->where('pegawai_id', $user->id);
+        }
+
+        if ($request->filter === 'menunggu') {
+            $query->where('isVerified', 'belum diverifikasi');
+        } elseif ($request->filter === 'disetujui') {
+            $query->where('isVerified', 'diverifikasi')
+                ->where('status', 'belum selesai');
+        } elseif ($request->filter === 'selesai') {
+            $query->where('status', 'selesai');
+        }
+
+        $perjalanans = $query->with('pegawai')->latest()->get();
+
+        $totalPerjalanan = $query->count();
+
+        if ($user->role === 'admin') {
+            $totalPerjalanan = Perjalanan::count();
+            $totalMenunggu = Perjalanan::where('isVerified', 'belum diverifikasi')->count();
+            $totalBelumSelesai = Perjalanan::where('status', 'belum selesai')->count();
+            $totalSelesai = Perjalanan::where('status', 'selesai')->count();
+
+        } else {
+            $totalPerjalanan = Perjalanan::where('pegawai_id', $user->id)->count();
+            $totalMenunggu = Perjalanan::where('pegawai_id', $user->id)->where('isVerified', 'belum diverifikasi')->count();
+            $totalBelumSelesai = Perjalanan::where('pegawai_id', $user->id)->where('status', 'belum selesai')->count();
+            $totalSelesai = Perjalanan::where('pegawai_id', $user->id)->where('status', 'selesai')->count();
+
+        }
+
+        $activeFilter = $request->filter;
+
+        $view = $user->role === 'admin' ? 'admin.dashboardAdmin' : 'pegawai.dashboardPegawai';
+
+        return view($view, compact(
+            'perjalanans',
+            'totalPerjalanan',
+            'totalMenunggu',
+            'totalBelumSelesai',
+            'totalSelesai',
+            'activeFilter',
+            'nama'
+        ));
     }
-
-    if ($request->filter === 'menunggu') {
-        $query->where('isVerified', 'belum diverifikasi');
-    } elseif ($request->filter === 'disetujui') {
-        $query->where('isVerified', 'diverifikasi')
-            ->where('status', 'belum selesai');
-    } elseif ($request->filter === 'selesai') {
-        $query->where('status', 'selesai');
-    }
-
-    $perjalanans = $query->with('pegawai')->latest()->get();
-
-    $totalPerjalanan = $query->count();
-
-    if ($user->role === 'admin') {
-        $totalPerjalanan   = Perjalanan::count();
-        $totalMenunggu     = Perjalanan::where('isVerified', 'belum diverifikasi')->count();
-        $totalBelumSelesai = Perjalanan::where('status', 'belum selesai')->count();
-        $totalSelesai      = Perjalanan::where('status', 'selesai')->count();
-
-    } else {
-        $totalPerjalanan   = Perjalanan::where('pegawai_id', $user->id)->count();
-        $totalMenunggu     = Perjalanan::where('pegawai_id', $user->id)->where('isVerified', 'belum diverifikasi')->count();
-        $totalBelumSelesai = Perjalanan::where('pegawai_id', $user->id)->where('status', 'belum selesai')->count();
-        $totalSelesai      = Perjalanan::where('pegawai_id', $user->id)->where('status', 'selesai')->count();
-
-    }
-
-    $activeFilter = $request->filter;
-
-    $view = $user->role === 'admin' ? 'admin.dashboardAdmin' : 'pegawai.dashboardPegawai';
-
-    return view($view, compact(
-        'perjalanans',
-        'totalPerjalanan',
-        'totalMenunggu',
-        'totalBelumSelesai',
-        'totalSelesai',
-        'activeFilter',
-        'nama'
-    ));
-}
 
 
     public function store(Request $request)
@@ -103,7 +103,8 @@ public function index(Request $request)
         return redirect()->back()->with('success', 'Status perjalanan berhasil diperbarui.');
     }
 
-    public function verifikasiAccept($id){
+    public function verifikasiAccept($id)
+    {
         $perjalanan = Perjalanan::findOrFail($id);
 
         $perjalanan->isVerified = 'diverifikasi';
@@ -113,7 +114,8 @@ public function index(Request $request)
         return redirect()->back()->with('success', 'Perjalanan berhasil diverifikasi.');
     }
 
-    public function verifikasiReject($id){
+    public function verifikasiReject($id)
+    {
         $perjalanan = Perjalanan::findOrFail($id);
 
         $perjalanan->isVerified = 'ditolak';
@@ -124,6 +126,19 @@ public function index(Request $request)
 
     }
 
+
+    public function edit($id)
+    {
+        $perjalanan = Perjalanan::findOrFail($id);
+        return view("pegawai.formEditPerjalanan", compact('perjalanan'));
+    }
+    public function update(Request $request, $id)
+    {
+        $perjalanan = Perjalanan::findOrFail($id);
+        $perjalanan->update($request->all());
+
+        return redirect()->route('pegawai-dashboard')->with('success', 'Perjalanan berhasil diperbarui');
+    }
 
 
 }

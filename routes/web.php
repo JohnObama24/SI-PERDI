@@ -32,4 +32,6 @@ Route::middleware(['auth:pegawai', 'role:pegawai'])->group(function () {
     Route::get('/buat-perjalanan', fn() => view('pegawai.formPerjalanan'))->name('pegawai-form');
     Route::post('/buat-perjalanan', [perjalananController::class, 'store'])->name('pegawai-buat');
     Route::patch('/buat-perjalanan/{id}/status', [perjalananController::class, 'updateStatus'])->name('pegawai-status');
+    Route::get('/edit-perjalanan/{id}', [perjalananController::class, 'edit'])->name('pegawaiEdit-form');
+    Route::put('/edit-perjalanan/{id}', [perjalananController::class, 'update'])->name('pegawaiUpdate--form');
 });

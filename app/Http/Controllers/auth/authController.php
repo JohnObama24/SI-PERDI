@@ -11,31 +11,31 @@ use Illuminate\Support\Facades\Hash;
 class authController extends Controller
 {
     //
-public function login(Request $request)
-{
-    $loginData = $request->validate([
-        'email' => ['required', 'string', 'email'],
-        'password' => ['required', 'string']
-    ]);
-
-    $pegawai = Pegawai::where('email', $loginData['email'])->first();
-
-    if ($pegawai && Hash::check($loginData['password'], $pegawai->password)) {
-        Auth::guard('pegawai')->login($pegawai);
-        $request->session()->regenerate();
-
-        if ($pegawai->role === 'admin') {
-            return redirect()->route('admin-dashboard');
-        } else {
-            return redirect()->route('pegawai-dashboard');
-        }
-
-    } else {
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+    public function login(Request $request)
+    {
+        $loginData = $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string']
         ]);
+
+        $pegawai = Pegawai::where('email', $loginData['email'])->first();
+
+        if ($pegawai && Hash::check($loginData['password'], $pegawai->password)) {
+            Auth::guard('pegawai')->login($pegawai);
+            $request->session()->regenerate();
+
+            if ($pegawai->role === 'admin') {
+                return redirect()->route('admin-dashboard');
+            } else {
+                return redirect()->route('pegawai-dashboard');
+            }
+
+        } else {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
+        }
     }
-}
 
     public function Register(Request $request)
     {
@@ -52,13 +52,14 @@ public function login(Request $request)
             'role' => 'pegawai',
         ]);
 
-        Auth::guard('pegawai')->login($Pegawai);
-        $request->session()->regenerate();
+        // Auth::guard('pegawai')->login($Pegawai);
+        // $request->session()->regenerate();
 
         return redirect()->route('admin-dashboard');
     }
 
-    public function Logout(Request $request) {
+    public function Logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

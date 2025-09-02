@@ -28,10 +28,11 @@
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-blue-100 p-2 rounded-lg">
                     <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2
-                                              0 01-2-2V5a2 2 0 012-2h5.586a1
-                                              1 0 01.707.293l5.414 5.414a1 1
-                                              0 01.293.707V19a2 2 0 01-2 2z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2
+                                                                                                                                          0 01-2-2V5a2 2 0 012-2h5.586a1
+                                                                                                                                          1 0 01.707.293l5.414 5.414a1 1
+                                                                                                                                          0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
             </div>
@@ -47,8 +48,9 @@
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-orange-100 p-2 rounded-lg">
                     <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0
-                                              11-18 0 9 9 0 0118 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0
+                                                                                                                                          11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
             </div>
@@ -65,12 +67,13 @@
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-green-100 p-2 rounded-lg">
                     <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0
-                                              010-12.728m12.728 0a9 9 0
-                                              010 12.728m-9.9-2.829a5 5
-                                              0 010-7.07m7.072 0a5 5
-                                              0 010 7.07M13 12a1 1 0
-                                              11-2 0 1 1 0 012 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5.636 18.364a9 9 0
+                                                                                                                                          010-12.728m12.728 0a9 9 0
+                                                                                                                                          010 12.728m-9.9-2.829a5 5
+                                                                                                                                          0 010-7.07m7.072 0a5 5
+                                                                                                                                          0 010 7.07M13 12a1 1 0
+                                                                                                                                          11-2 0 1 1 0 012 0z" />
                     </svg>
                 </div>
             </div>
@@ -87,8 +90,9 @@
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-gray-100 p-2 rounded-lg">
                     <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0
-                                              11-18 0 9 9 0 0118 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0
+                                                                                                                                          11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
             </div>
@@ -121,8 +125,9 @@
             class="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-800 transition-colors"
             onclick="window.location='{{ route('pegawai-form') }}'">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6
-                                      0H6" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6
+                                                                                                                                  0H6" />
             </svg>
             <span>Ajukan Perjalanan Dinas Baru</span>
         </button>
@@ -148,8 +153,7 @@
                                 @elseif($p->isVerified === 'diverifikasi')
                                     <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Disetujui</span>
                                 @else
-                                    <span
-                                        class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Menunggu</span>
+                                    <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Menunggu</span>
                                 @endif
                             </div>
 
@@ -162,19 +166,27 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="flex gap-2">
+
+                            <a href="{{route("pegawaiEdit-form", $p->id)}}"
+                                class="px-4 py-2 rounded-lg text-white  bg-blue-600  hover:bg-blue-400  text-sm cursor-pointer">edit</a>
+
+
                             @if ($p->isVerified === 'diverifikasi')
                                 <form action="{{ route('pegawai-status', $p->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
-                                        class="px-4 py-2 rounded-lg text-white text-sm
-                                    {{ $p->status === 'selesai' ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-500 hover:bg-gray-600' }}">
+                                        class="px-4 py-2 rounded-lg text-white text-sm cursor-pointer
+                                                                                                                                                                                                                                                                                                                        {{ $p->status === 'selesai' ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-500 hover:bg-gray-600' }}">
                                         {{ $p->status === 'selesai' ? 'Selesai' : 'Belum Selesai' }}
                                     </button>
                                 </form>
                             @endif
+
+
                         </div>
+
                     </div>
                 </div>
             @empty
