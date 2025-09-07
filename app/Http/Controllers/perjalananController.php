@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Models\Perjalanan;
-
 use Illuminate\Support\Facades\Auth;
+use App\Exports\PerjalananExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class perjalananController extends Controller
 {
@@ -138,6 +137,21 @@ class perjalananController extends Controller
         $perjalanan->update($request->all());
 
         return redirect()->route('pegawai-dashboard')->with('success', 'Perjalanan berhasil diperbarui');
+    }
+
+    public function ShowExportForm()
+    {
+        return view('admin.exportForm');
+    }
+
+    public function export(Request $request)
+    {
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date|after_or_equal:from_date',
+        ]);
+
+        return Excel::download(new PerjalananExport($request->from_date, $request->to_date), 'perjalanan.xlsx');
     }
 
 

@@ -22,9 +22,8 @@ Route::middleware(['auth:pegawai', 'role:admin'])->group(function () {
     Route::get('/admin', [perjalananController::class, 'index'])->name('admin-dashboard');
     Route::patch('/verifikasi/accept/{id}', [perjalananController::class, 'verifikasiAccept'])->name('verifikasi-accept');
     Route::patch('/verifikasi/reject/{id}', [perjalananController::class, 'verifikasiReject'])->name('verifikasi-reject');
-    Route::get('/export-perjalanan', function () {
-        return Excel::download(new PerjalananExport, 'perjalanan.xlsx');
-    })->name('export');
+    Route::get('/export-form', [perjalananController::class, 'ShowExportForm'])->name('export');
+    Route::post('/export-form/excel', [perjalananController::class, 'export'])->name('export.excel');
 });
 
 Route::middleware(['auth:pegawai', 'role:pegawai'])->group(function () {
