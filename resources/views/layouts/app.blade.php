@@ -35,12 +35,12 @@
     </div>
 
     <!-- Content -->
-    <div class="container mx-auto px-4 py-6">
+    <div class="container   mx-auto px-4 py-6">
         @yield('content')
     </div>
 
     <!-- Footer -->
-    <div class="text-center mt-8 py-4">
+    <div class="text-center  mt-8 py-4">
         <p class="text-sm text-gray-500">© 2025 Kelompok 4 All Right Reserved</p>
     </div>
 
